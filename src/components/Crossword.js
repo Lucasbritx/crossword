@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './Crossword.css';
 
-const Crossword = ({ data }) => {
+const Crossword = ({ data, onFinished }) => {
   const [grid, setGrid] = useState(data.grid);
   const [clues, setClues] = useState(data.clues);
   const [clueNumbers, setClueNumbers] = useState({});
+  const [isFinished, setIsFinished] = useState(false);
+
+  useEffect(() => {
+    setGrid(data.grid);
+    setClues(data.clues);
+    setIsFinished(false);
+  }, [data]);
 
   useEffect(() => {
     const newClueNumbers = {};
@@ -29,12 +36,15 @@ const Crossword = ({ data }) => {
 
   const checkAnswers = (currentGrid) => {
     const newClues = { ...clues };
+    let allCorrect = true;
 
     Object.keys(newClues.across).forEach((number) => {
       const { answer, row, col } = newClues.across[number];
       const word = currentGrid[row].slice(col, col + answer.length).join('');
       if (word === answer) {
         newClues.across[number].isCorrect = true;
+      } else {
+        allCorrect = false;
       }
     });
 
@@ -46,16 +56,28 @@ const Crossword = ({ data }) => {
       }
       if (word === answer) {
         newClues.down[number].isCorrect = true;
+      } else {
+        allCorrect = false;
       }
     });
 
     setClues(newClues);
+    if (allCorrect) {
+      setIsFinished(true);
+    }
   };
 
   const numCols = data.grid[0].length;
 
   return (
     <div className="crossword">
+      {isFinished && (
+        <div className="finished-feedback">
+          <h2>Congratulations!</h2>
+          <p>You have completed the puzzle.</p>
+          <button onClick={onFinished}>Play Again</button>
+        </div>
+      )}
       <div className="grid" style={{ gridTemplateColumns: `repeat(${numCols}, 40px)` }}>
         {grid.flat().map((cell, index) => {
           const row = Math.floor(index / numCols);

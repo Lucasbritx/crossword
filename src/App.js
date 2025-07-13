@@ -6,14 +6,18 @@ import { generateCrossword } from './crossword-generator';
 function App() {
   const [crosswordData, setCrosswordData] = useState(null);
 
-  useEffect(() => {
+  const handleGenerateCrossword = () => {
     setCrosswordData(generateCrossword());
+  }
+
+  useEffect(() => {
+    handleGenerateCrossword();
   }, []);
 
   return (
     <div className="App">
       <h1>Crossword Game</h1>
-      {crosswordData && <Crossword data={crosswordData} />}
+      {crosswordData && <Crossword data={crosswordData} onFinished={handleGenerateCrossword} />}
     </div>
   );
 }

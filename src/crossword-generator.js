@@ -64,7 +64,7 @@ function fillGrid(grid, placements, clues, words) {
   for (const wordData of availableWords) {
     if (canPlaceWord(grid, wordData.word, placement)) {
       const newGrid = grid.map(row => [...row]);
-      const newClues = { ...clues };
+      const newClues = JSON.parse(JSON.stringify(clues));
       const newWords = words.filter(w => w.word !== wordData.word);
 
       if (placement.direction === 'across') {
@@ -77,7 +77,8 @@ function fillGrid(grid, placements, clues, words) {
         }
       }
 
-      newClues[placement.direction][Object.keys(newClues[placement.direction]).length + 1] = {
+      const clueNumber = Object.keys(newClues.across).length + Object.keys(newClues.down).length + 1;
+      newClues[placement.direction][clueNumber] = {
         clue: wordData.clue,
         answer: wordData.word,
         row: placement.row,
@@ -87,7 +88,10 @@ function fillGrid(grid, placements, clues, words) {
 
       if (fillGrid(newGrid, remainingPlacements, newClues, newWords)) {
         Object.assign(grid, newGrid);
-        Object.assign(clues, newClues);
+        Object.keys(clues.across).forEach(key => delete clues.across[key]);
+        Object.keys(clues.down).forEach(key => delete clues.down[key]);
+        Object.assign(clues.across, newClues.across);
+        Object.assign(clues.down, newClues.down);
         return true;
       }
     }
