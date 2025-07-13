@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Crossword from './components/Crossword';
-import { crosswordData } from './crossword-data';
+import { generateCrossword } from './crossword-generator';
 
 function App() {
+  const [crosswordData, setCrosswordData] = useState(null);
+
+  useEffect(() => {
+    setCrosswordData(generateCrossword());
+  }, []);
+
   return (
     <div className="App">
       <h1>Crossword Game</h1>
-      <Crossword data={crosswordData} />
+      {crosswordData && <Crossword data={crosswordData} />}
     </div>
   );
 }
