@@ -5,13 +5,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(5, 40px);
   grid-gap: 2px;
   border: 2px solid black;
-}
-
-.row {
-    display: flex;
 }
 
 .cell {
