@@ -3,6 +3,7 @@ import './Crossword.css';
 
 const Crossword = ({ data }) => {
   const [grid, setGrid] = useState(data.grid);
+  const numCols = data.grid[0].length;
 
   const handleChange = (e, row, col) => {
     const newGrid = [...grid];
@@ -12,23 +13,23 @@ const Crossword = ({ data }) => {
 
   return (
     <div className="crossword">
-      <div className="grid">
-        {grid.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((cell, colIndex) => (
-              <div key={colIndex} className="cell">
-                {cell !== 0 && (
-                  <input
-                    type="text"
-                    maxLength="1"
-                    value={grid[rowIndex][colIndex] === 0 ? '' : grid[rowIndex][colIndex]}
-                    onChange={(e) => handleChange(e, rowIndex, colIndex)}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-        ))}
+      <div className="grid" style={{ gridTemplateColumns: `repeat(${numCols}, 40px)` }}>
+        {grid.flat().map((cell, index) => {
+          const row = Math.floor(index / numCols);
+          const col = index % numCols;
+          return (
+            <div key={`${row}-${col}`} className="cell">
+              {cell !== 0 && (
+                <input
+                  type="text"
+                  maxLength="1"
+                  value={grid[row][col] === 0 ? '' : grid[row][col]}
+                  onChange={(e) => handleChange(e, row, col)}
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
       <div className="clues">
         <div className="across">
