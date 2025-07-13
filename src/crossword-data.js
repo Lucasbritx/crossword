@@ -1,25 +1,29 @@
 export const crosswordData = {
-    grid: [
-      ['R', 'E', 'A', 'C', 'T'],
-      [0, 0, 'C', 0, 0],
-      [0, 0, 'T', 0, 0],
-      [0, 0, 'O', 0, 0],
-      [0, 0, 'R', 0, 0],
+  grid: [
+    ['R', '', 'A', '', 'T'],
+    [0, 0, '', '', ''],
+    [0, 0, '', '', ''],
+    [0, 0, '', 0, 0],
+    ['C', '', '', 0, 0],
+  ],
+  clues: {
+    across: [
+      '1. A popular JavaScript library for building user interfaces.',
+      '3. A road vehicle, typically with four wheels.',
     ],
-    clues: {
+    down: [
+      '2. A person who performs in a play or movie.',
+      '4. Abbreviation for Tuesday.',
+    ],
+  },
+  answers: {
       across: [
-        '1. A popular JavaScript library for building user interfaces.',
+          'REACT',
+          'CAR'
       ],
       down: [
-        '1. A tool that transpiles JavaScript files.',
-      ],
-    },
-    answers: {
-        across: [
-            'REACT'
-        ],
-        down: [
-            'ACTOR'
-        ]
-    }
-  };
+          'ACTOR',
+          'TUE'
+      ]
+  }
+};
